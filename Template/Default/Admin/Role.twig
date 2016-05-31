@@ -1,0 +1,44 @@
+{% extends 'Admin/Base.twig' %}
+
+{% block content %}
+
+    <div class="aw-content-wrap">
+        <div class="mod">
+            <div class="mod-head">
+                <h3>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#" data-toggle="tab" id="system">角色</a></li>
+                    </ul>
+                </h3>
+            </div>
+            <div class="mod-body tab-content">
+
+                <div class="tab-pane active" id="_system">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>系统组名称</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for role in roles %}
+                        <tr>
+                            <td>{{ role.id }}</td>
+                            <td>{{ role.title }}</td>
+                            <td>修改,删除</td>
+                        </tr>
+                            {% endfor %}
+                        {#<tr>#}
+                            {#<td>2</td>#}
+                            {#<td>会员</td>#}
+                        {#</tr>#}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

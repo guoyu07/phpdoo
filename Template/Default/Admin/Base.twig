@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <meta charset="utf-8">
+        <meta content="webkit" name="renderer">
+        <meta content="IE=edge,Chrome=1" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width,initial-scale=1,maximum-scale=1" name="viewport">
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="blank" name="apple-mobile-web-app-status-bar-style">
+        <meta content="telephone=no" name="format-detection">
+    {% block title %}
+        <title>分类管理-有问必答</title>
+    {% endblock title %}
+        <link href="{{ 'Resource/Default/css/'|generateUrl }}bootstrap.css?v=20151125" rel="stylesheet" type="text/css">
+        <link href="{{ 'Resource/Default/css/'|generateUrl }}icon.css?v=20151125" rel="stylesheet" type="text/css">
+        <link href="{{ 'Resource/Default/admin/css/'|generateUrl }}common.css?v=20151125" rel="stylesheet" type="text/css">
+        <script src="{{ 'Resource/Default/js/'|generateUrl }}jquery.2.js?v=20151125" type="text/javascript"></script>
+        <script src="{{ 'Resource/Default/js/'|generateUrl }}jquery.form.js?v=20151125" type="text/javascript"></script>
+        <script src="{{ 'Resource/Default/admin/js/'|generateUrl }}framework.js?v=20151125" type="text/javascript"></script>
+        <script src="{{ 'Resource/Default/admin/js/'|generateUrl }}global.js?v=20151125" type="text/javascript"></script>
+        <!--[if lte IE 8]>
+        <script type="text/javascript" src="{{ 'Resource/Default/js/'|generateUrl }}respond.js"></script>
+        <![endif]-->
+    {% endblock head %}
+</head>
+
+<body>
+<div class="aw-header">
+    <button class="btn btn-sm mod-head-btn pull-left">
+        <i class="icon icon-bar"></i>
+    </button>
+
+    <div class="mod-header-user">
+        <ul class="pull-right">
+
+            <li class="dropdown username">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="">
+                    <img width="30" class="img-circle" src="{{ 'Resource/Default'|generateUrl }}/common/avatar-mid-img.png">
+                    {{ session_user.username }}
+                    <span class="caret"></span>
+                </a>
+
+                <ul class="dropdown-menu pull-right mod-user">
+                    <li>
+                        <a target="_blank" href="">
+                            <i class="icon icon-user"></i>
+                            账户
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ 'account/logout'|generateUrl }}">
+                            <i class="icon icon-logout"></i>
+                            退出
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+{% block left_menu %}
+    <div id="aw-side" class="aw-side ps-container">
+        <div class="mod">
+            <div class="mod-logo">
+                <img alt="" src="{{ 'Resource/Default'|generateUrl }}/admin/img/logo.png" class="pull-left">
+                <h1>有问必答</h1>
+            </div>
+
+            <div class="mod-message">
+                <div class="message">
+                    <a title="首页" target="_blank" href="/" class="btn btn-sm">
+                        <i class="icon icon-home"></i>
+                    </a>
+
+                    <a title="退出" href="{{ 'logout'|generateUrl }}" class="btn btn-sm">
+                        <i class="icon icon-logout"></i>
+                    </a>
+                </div>
+            </div>
+
+            <ul class="mod-bar">
+                <input type="hidden" val="0" id="hide_values">
+                <li>
+                    <a class="{% if ('#^' ~ ('admin'|generateUrl) ~ '$#') | RegexMatchRequestUrl %}active{% endif %} icon icon-ul" href="{{ 'admin'|generateUrl }}">
+                        <span>摘要信息</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a data="icon" class="{% if ('#^' ~ ('admin'|generateUrl) ~ '/(category|question|topic|spider)[/]?\w*$#') | RegexMatchRequestUrl %}active{% endif %} icon icon-reply" href="javascript:;">
+                        <span>内容管理</span>
+                    </a>
+
+                    <ul class="hide" {% if ('#^' ~ ('admin'|generateUrl) ~ '/(category|question|topic|spider)[/]?\w*$#') | RegexMatchRequestUrl %}style="display: block;"{% endif %}>
+                        <li>
+                            <a href="{{ 'admin/category'|generateUrl }}" class="{% if ('#^' ~ ('admin'|generateUrl) ~ '/(category)[/]?\w*$#') | RegexMatchRequestUrl %}active{% endif %}">
+                                <span>分类管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ 'admin/question'|generateUrl }}" class="{% if ('#^' ~ ('admin'|generateUrl) ~ '/(question)[/]?\w*$#') | RegexMatchRequestUrl %}active{% endif %}">
+                                <span>问题管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ 'admin/topic'|generateUrl }}" class="{% if ('#^' ~ ('admin'|generateUrl) ~ '/(topic)[/]?\w*$#') | RegexMatchRequestUrl %}active{% endif %}">
+                                <span>话题管理</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ 'admin/spider'|generateUrl }}" class="{% if ('#^' ~ ('admin'|generateUrl) ~ '/(spider)[/]?\w*$#') | RegexMatchRequestUrl %}active{% endif %}">
+                                <span>数据采集</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a data="icon" class="{% if ('#^' ~ ('admin'|generateUrl) ~ '/(user|role)[/]?\w*$#') | RegexMatchRequestUrl %}active{% endif %} icon icon-user" href="javascript:;">
+                        <span>用户管理</span>
+                    </a>
+
+                    <ul class="hide" {% if ('#^' ~ ('admin'|generateUrl) ~ '/(user|role)[/]?\w*$#') | RegexMatchRequestUrl %}style="display: block;"{% endif %}>
+                        <li>
+                            <a href="{{ 'admin/user'|generateUrl }}" class="{% if ('#^' ~ ('admin'|generateUrl) ~ '/(user)[/]?\w*$#') | RegexMatchRequestUrl %}active{% endif %}">
+                                <span>用户列表</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ 'admin/role'|generateUrl }}" class="{% if ('#^' ~ ('admin'|generateUrl) ~ '/(role)[/]?\w*$#') | RegexMatchRequestUrl %}active{% endif %}">
+                                <span>用户角色</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a data="icon" class="icon icon-setting" href="javascript:;">
+                        <span>全局设置</span>
+                    </a>
+
+                    <ul class="hide">
+                        <li>
+                            <a href="{{ 'admin/site'|generateUrl }}">
+                                <span>站点信息</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ 'admin/regedit'|generateUrl }}">
+                                <span>注册访问</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ 'admin/mail-setting'|generateUrl }}">
+                                <span>邮件设置</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a data="icon" class=" icon icon-job" href="javascript:;">
+                        <span>工具</span>
+                    </a>
+
+                    <ul class="hide">
+                        <li>
+                            <a href="{{ 'admin/tool'|generateUrl }}">
+                                <span>系统维护</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="ps-scrollbar-x-rail" style="width: 235px; display: none; left: 0px; bottom: 3px;">
+            <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps-scrollbar-y-rail" style="top: 0px; height: 607px; display: inherit; right: 0px;">
+            <div class="ps-scrollbar-y" style="top: 0px; height: 560px;"></div>
+        </div>
+    </div>
+{% endblock left_menu %}
+
+{% block content %}
+    content...
+{% endblock content %}
+
+{% block foot %}
+    <div class="aw-footer">
+        <p>
+            Copyright &copy; 2016-2099 - Powered By
+            <a target="blank" href="http://hellokang.net/">有问必答 1.0</a>
+        </p>
+    </div>
+{% endblock foot %}
+</body>
+</html>

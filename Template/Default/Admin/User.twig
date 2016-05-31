@@ -1,0 +1,143 @@
+{% extends 'Admin/Base.twig' %}
+
+{% block content %}
+
+    <div id="user_list" class="aw-content-wrap">
+        <div class="mod">
+            <div class="mod-head">
+                <h3>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="{{ 'admin/user'|generateUrl }}">会员列表</a></li>
+                        <li class=""><a data-toggle="tab" href="#search">搜索</a></li>
+                        <li><a href="{{ 'admin/add'|generateUrl }}">添加用户</a></li>
+                    </ul>
+                </h3>
+            </div>
+            <div class="mod-body tab-content">
+                <div id="list" class="tab-pane active">
+
+                    <div class="table-responsive">
+                        <form id="users_form" action="#" method="post">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>用户名</th>
+                                    <th>邮箱</th>
+                                    <th>角色</th>
+                                    <th>注册时间</th>
+                                    <th>最后活跃</th>
+                                    {#<th>在线时长</th>#}
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for row in users %}
+                                <tr>
+                                    <td>{{ row.id }}</td>
+                                    <td>
+                                        <a target="_blank" href="http://localhost/wecenter/?/people/bull">{{ row.username }}</a>
+                                        <span class="text-color-999">{% if row.status == 0 %}[ 邮件未验证 ]{% endif %}</span>
+                                    </td>
+                                    <td>{{ row.email }}</td>
+                                    <td>{{ row.role_title }}</td>
+                                    <td>{{ row.regtime | date('Y-m-d H:i:s') }}</td>
+                                    <td>{{ row.lastlogin | date('Y-m-d H:i:s') }}</td>
+                                    {#<td>10 分钟</td>#}
+                                    <td class="nowrap">
+                                        <a title="" class="icon icon-edit md-tip" href="{{ 'admin/user/edit'|generateUrl }}?id={{ row.id }}" data-original-title="编辑"></a>
+                                        <a class="icon icon-forbid md-tip" href="{{ 'admin/user/disable'|generateUrl }}?id={{ row.id }}" onclick="return confirm('确定要封停该账号吗？')" data-original-title="封禁用户"></a></td>
+                                </tr>
+                                    {% endfor %}
+                                {#<tr>#}
+                                    {#<td><div class="icheckbox_square-blue" style="position: relative;"><input type="checkbox" name="uids[]" value="1" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins></div></td>#}
+                                    {#<td>1</td>#}
+                                    {#<td><a target="_blank" href="http://localhost/wecenter/?/people/kang">kang</a> </td>#}
+                                    {#<td>kang@hellokang.net</td>#}
+                                    {#<td>管理员</td>#}
+                                    {#<td>2 天前</td>#}
+                                    {#<td>1 分钟前</td>#}
+                                    {#<td>280 分钟</td>#}
+                                    {#<td class="nowrap">#}
+                                        {#<a title="" class="icon icon-edit md-tip" href="http://localhost/wecenter/?/admin/user/edit/uid-1" data-original-title="编辑"></a>#}
+                                    {#</td>#}
+                                {#</tr>#}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+
+                    <div class="mod-table-foot">
+                        <div class="col-sm-4 col-xs-12">
+                            {#<a onclick="AWS.ajax_post($('#users_form'));" class="btn btn-danger">删除</a>#}
+                        </div>
+                        <div class="col-xs-12 col-sm-8">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search" class="tab-pane">
+                    <form role="form" class="form-horizontal" id="search_form" onsubmit="return false;" action="" method="post">
+
+                        <input type="hidden" value="search" name="action">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-xs-3 control-label">用户名:</label>
+
+                            <div class="col-sm-5 col-xs-8">
+                                <input type="text" name="user_name" value="" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-xs-3 control-label">邮箱:</label>
+
+                            <div class="col-sm-5 col-xs-8">
+                                <input type="text" name="email" value="" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-xs-3 control-label">用户组:</label>
+
+                            <div class="col-sm-5 col-xs-8">
+                                <select class="form-control" name="group_id">
+                                    <option value=""></option>
+                                    <option value="1">超级管理员</option>
+                                    <option value="2">前台管理员</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-xs-3 control-label">最后登录 IP 段:</label>
+
+                            <div class="col-sm-5 col-xs-8">
+                                <input type="text" name="ip" value="" class="form-control">
+
+                                <span class="help-block">限 C 段, 如: 203.31.42.*</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 col-xs-3 control-label">居住地:</label>
+
+                            <div class="col-sm-3 col-xs-3">
+                                <select class="select_area form-control" name="province" style="display: inline-block;"><option value="">请选择省份或直辖市</option><option value="安徽省">安徽省</option><option value="北京市">北京市</option><option value="福建省">福建省</option><option value="甘肃省">甘肃省</option><option value="广东省">广东省</option><option value="广西壮族自治区">广西壮族自治区</option><option value="贵州省">贵州省</option><option value="海南省">海南省</option><option value="河北省">河北省</option><option value="河南省">河南省</option><option value="黑龙江省">黑龙江省</option><option value="湖北省">湖北省</option><option value="湖南省">湖南省</option><option value="吉林省">吉林省</option><option value="江苏省">江苏省</option><option value="江西省">江西省</option><option value="辽宁省">辽宁省</option><option value="内蒙古自治区">内蒙古自治区</option><option value="宁夏回族自治区">宁夏回族自治区</option><option value="青海省">青海省</option><option value="山东省">山东省</option><option value="山西省">山西省</option><option value="陕西省">陕西省</option><option value="上海市">上海市</option><option value="四川省">四川省</option><option value="天津市">天津市</option><option value="西藏自治区">西藏自治区</option><option value="新疆维吾尔自治区">新疆维吾尔自治区</option><option value="云南省">云南省</option><option value="浙江省">浙江省</option><option value="重庆市">重庆市</option><option value="香港">香港</option><option value="澳门">澳门</option><option value="台湾">台湾</option></select>
+                            </div>
+                            <div class="col-sm-3 col-xs-3">
+                                <select class="select_area form-control hide" name="city"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-5 col-xs-8">
+                                <button class="btn btn-primary" onclick="AWS.ajax_post($('#search_form'));" type="button">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

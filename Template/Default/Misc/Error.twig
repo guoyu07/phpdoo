@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<php>{{ data.code }}</php>
+<head>
+    <meta charset="utf-8"/>
+    <title>Error - {{ data.code }} - {{ SITE_NAME }}</title>
+    <base href="{BASE_URL}"/>
+    <meta name="Robots" content="NOINDEX, NOFOLLOW, NOARCHIVE"/>
+    <meta name="ViewPort" content="initial-scale=1, minimum-scale=1, width=device-width"/>
+    <link rel="stylesheet" href="{{ web_root_path }}Resource/Misc/Error.css">
+</head>
+<body>
+<p class="title">{{ SITE_NAME }}</p>
+<div class="box">
+    <h2>System Error - <b>{{ data.code }}</b></h2>
+    <p class="main selectable">{{ data.error_info }}</p>
+    <p>We're now fixing this problem, sorry for the inconveniences.</p>
+    <if condition="defined('DEBUG_ENABLE') && DEBUG_ENABLE">
+        <pre>{#BackTrace:#}<br>{{ tract }}</pre>
+    </if>
+</div>
+<p class="foot"></p>
+</body>
+</html>

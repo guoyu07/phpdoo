@@ -1,0 +1,330 @@
+{% extends 'Base.twig' %}
+
+{% block content %}
+    <div class="aw-container-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="aw-global-tips"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="aw-content-wrap clearfix">
+                    <div class="col-sm-12 col-md-9 aw-main-content">
+                        <div class="aw-mod aw-topic-detail-title">
+                            <div class="mod-body">
+                                <img src="{{ ''|generateUrl }}Uploads/{{ topic.topic_img }}" alt="{{ topic.topic_title }}" style="max-width: 50px!important;max-height: 50px!important;">
+                                <h2 class="pull-left">{{ topic.topic_title }}</h2>
+                                <div class="aw-topic-operate text-color-999">
+                                    <a title="" data-original-title="" href="javascript:;" class="follow btn btn-normal btn-success active">
+                                        <span>关注</span> <em>|</em> <b>{{ followUsers|length }}</b>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="aw-mod aw-topic-list-mod">
+                            <div class="mod-head">
+                                <div class="tabbable">
+                                    <!-- tab 切换 -->
+                                    <ul class="nav nav-tabs aw-nav-tabs hidden-xs">
+                                        <li class="active">
+                                            <a href="#all" data-toggle="tab">全部内容</a>
+                                        </li>
+                                        <li>
+                                            <a href="#best_answers" data-toggle="tab">精华</a>
+                                        </li>
+                                        <li>
+                                            <a href="#recommend" data-toggle="tab">推荐</a>
+                                        </li>
+                                        <li>
+                                            <a href="#favorite" id="i_favorite" data-toggle="tab" style="display:none">我的收藏</a>
+                                        </li>
+                                        <li>
+                                            <a href="#about" id="i_about" data-toggle="tab">关于话题</a>
+                                        </li>
+                                        <div class="aw-search-bar pull-right hidden-xs">
+                                            <i class="icon icon-search"></i>
+                                            <input type="text" id="question-input" class="search-query form-control" placeholder="搜索...">
+                                            <div class="aw-dropdown">
+                                                <p class="title">没有找到相关结果</p>
+                                                <ul class="aw-dropdown-list"></ul>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                    <!-- end tab 切换 -->
+                                </div>
+                            </div>
+
+                            <div class="mod-body">
+                                <!-- tab 切换内容 -->
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="all">
+                                        <!-- 推荐问题 -->
+                                        <!-- end 推荐问题 -->
+                                        <div class="aw-mod">
+                                            <div class="mod-body">
+                                                <div class="aw-common-list" id="c_all_list">
+                                                    {% for row in questions.data %}
+                                                        <div class="aw-item active" data-topic-id="2,">
+                                                            <a class="aw-user-name hidden-xs" data-id="1" href="http://localhost/wecenter/?/people/kang" rel="nofollow">
+                                                                <img src="{{ 'Resource/Default'|generateUrl }}/common/avatar-mid-img.png" alt=""></a>
+                                                            <div class="aw-question-content">
+                                                                <h4>
+                                                                    <a href="{{ 'question/detail'|generateUrl }}?question_id={{ row.question_id }}">{{ row.question_content }}</a>
+                                                                </h4>
+                                                                <a href="{{ 'question/detail'|generateUrl }}?question_id={{ row.question_id }}" class="pull-right text-color-999">回复</a>
+
+                                                                <p>
+                                                                    <a class="aw-question-tags" href="#">{{ row.category_title }}</a>
+                                                                    •
+                                                                    <a href="http://localhost/wecenter/?/people/kang" class="aw-user-name">{{ row.username }}</a>
+                                                                    <span class="text-color-999">发起了问题 • {{ row.followCount|nullToZeroNumber }} 人关注 • {{ row.answerCount|nullToZeroNumber }} 个回复 • {{ row.view_count|nullToZeroNumber }} 次浏览 • {{ row.add_time | timeago }}</span>
+                                                                    <span class="text-color-999 related-topic hide">• 来自相关话题</span>
+                                                                </p>
+
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+
+                                            <div class="mod-footer">
+                                                <div class="page-control">
+                                                    {{ paginator | raw }}
+                                                </div>
+                                            </div>
+
+                                            {% if questions.data is empty %}
+                                                <div class="mod-footer">
+                                                    <a data-page="2" class="aw-load-more-content disabled" id="c_all_more" auto-load="false">
+                                                        <span>没有更多了</span>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="best_answers">
+                                        <div class="aw-feed-list" id="c_best_question_list">
+                                            <div class="mod-body"></div>
+                                            <div class="mod-footer">
+                                                <a data-page="2" class="aw-load-more-content" id="bp_best_question_more" auto-load="false">
+                                                    <span>更多...</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="recommend">
+                                        <div class="aw-mod">
+                                            <div class="mod-body">
+                                                <div class="aw-common-list" id="c_recommend_list"></div>
+                                            </div>
+                                            <div class="mod-footer">
+                                                <a data-page="2" class="aw-load-more-content" id="c_recommend_more" auto-load="false">
+                                                    <span>更多...</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="questions">
+                                        <div class="aw-mod">
+                                            <div class="mod-body">
+                                                <div class="aw-common-list" id="c_question_list">
+                                                    <div class="aw-item active" data-topic-id="2,">
+                                                        <a class="aw-user-name hidden-xs" data-id="1" href="http://localhost/wecenter/?/people/kang" rel="nofollow">
+                                                            <img src="http://localhost/wecenter/uploads/avatar/000/00/00/01_avatar_max.jpg" alt=""></a>
+                                                        <div class="aw-question-content">
+                                                            <h4>
+                                                                <a href="http://localhost/wecenter/?/question/2">PHP是世界上最好的语言</a>
+                                                            </h4>
+                                                            <a href="http://localhost/wecenter/?/question/2#!answer_form" class="pull-right text-color-999">回复</a>
+
+                                                            <p>
+                                                                <a class="aw-question-tags" href="http://localhost/wecenter/?/explore/category-1">默认分类</a>
+                                                                •
+                                                                <a href="http://localhost/wecenter/?/people/kang" class="aw-user-name">kang</a>
+                                                                <span class="text-color-999">发起了问题 • 1 人关注 • 0 个回复 • 1 次浏览 • 5 天前</span>
+                                                                <span class="text-color-999 related-topic hide">• 来自相关话题</span>
+                                                            </p>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="aw-item " data-topic-id="2,">
+                                                        <a class="aw-user-name hidden-xs" data-id="1" href="http://localhost/wecenter/?/people/kang" rel="nofollow">
+                                                            <img src="http://localhost/wecenter/uploads/avatar/000/00/00/01_avatar_max.jpg" alt=""></a>
+                                                        <div class="aw-question-content">
+                                                            <h4>
+                                                                <a href="http://localhost/wecenter/?/question/1">PHP是什么</a>
+                                                            </h4>
+                                                            <a href="http://localhost/wecenter/?/question/1#!answer_form" class="pull-right text-color-999">回复</a>
+
+                                                            <p>
+                                                                <a class="aw-question-tags" href="http://localhost/wecenter/?/explore/category-1">默认分类</a>
+                                                                •
+                                                                <a href="http://localhost/wecenter/?/people/bull" class="aw-user-name" data-id="2">bull</a>
+                                                                <span class="text-color-999">回复了问题 • 1 人关注 • 1 个回复 • 7 次浏览 • 5 天前</span>
+                                                                <span class="text-color-999 related-topic hide">• 来自相关话题</span>
+                                                            </p>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mod-footer">
+                                                <a data-page="2" class="aw-load-more-content" id="c_question_more" auto-load="false">
+                                                    <span>更多...</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="articles">
+                                        <!-- 动态首页&话题精华模块 -->
+                                        <div class="aw-mod">
+                                            <div class="mod-body">
+                                                <div class="aw-common-list" id="c_articles_list"></div>
+                                            </div>
+                                            <div class="mod-footer">
+                                                <a data-page="2" class="aw-load-more-content" id="bp_articles_more" auto-load="false">
+                                                    <span>更多...</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!-- end 动态首页&话题精华模块 -->
+                                    </div>
+
+                                    <div class="tab-pane" id="favorite">
+                                        <!-- 动态首页&话题精华模块 -->
+                                        <div class="aw-mod aw-feed-list" id="c_favorite_list">
+                                            <p align="center" style="padding: 15px 0">没有内容</p>
+                                        </div>
+                                        <!-- end 动态首页&话题精华模块 -->
+
+                                        <!-- 加载更多内容 -->
+                                        <a data-page="0" class="aw-load-more-content disabled" id="bp_favorite_more">
+                                            <span>没有更多了</span>
+                                        </a>
+                                        <!-- end 加载更多内容 -->
+                                    </div>
+
+                                    <div class="tab-pane" id="about">
+                                        <div class="aw-topic-detail-about text-color-666 markitup-box"></div>
+                                    </div>
+                                </div>
+                                <!-- end tab 切换内容 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 侧边栏 -->
+                    <div class="col-sm-12 col-md-3 aw-side-bar hidden-xs">
+                        <!-- 话题描述 -->
+                        <div class="aw-mod aw-text-align-justify">
+                            <div class="mod-head">
+                                <h3>话题描述</h3>
+                            </div>
+                            <div class="mod-body">
+                                {% if topic.topic_desc is empty %}
+                                <a href="http://localhost/wecenter/?/topic/edit/2" class="icon-inverse">
+                                    <i class="icon icon-edit"></i>
+                                    添加描述
+                                </a>
+                                {% else %}
+                                    {{ topic.topic_desc }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- end 话题描述 -->
+
+                        <div class="aw-mod topic-about">
+                            <div class="mod-head">
+                                <h3>相关话题</h3>
+                            </div>
+                            <div class="mod-body" data-type="topic">
+                                <div class="aw-topic-bar" data-type="topic" data-id="2">
+                                    <div class="tag-bar clearfix">
+									<span class="aw-edit-topic icon-inverse">
+										<i class="icon icon-edit"></i>
+									</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 最佳回复者 -->
+                        <!-- end 最佳回复者 -->
+
+                        <!-- xx人关注该话题 -->
+                        <div class="aw-mod topic-status">
+                            <div class="mod-head">
+                                <h3>{{ followUsers|length }} 人关注该话题</h3>
+                            </div>
+                            <div class="mod-body">
+                                <div id="focus_users" class="aw-border-radius-5">
+                                    {% for row in followUsers %}
+                                    <a href="{{ ('account/people?user_id=' ~ row.id) |generateUrl }}">
+                                        <img src="{{ 'Resource/Default/common/avatar-mid-img.png'|generateUrl }}" alt="{{ row.username }}">
+                                    </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end xx人关注该话题 -->
+
+                        <!-- 话题修改记录 -->
+                        {#<div class="aw-mod topic-edit-notes">#}
+                            {#<div class="mod-head">#}
+                                {#<h3>#}
+                                    {#<i class="icon icon-down pull-right"></i>#}
+                                    {#话题修改记录#}
+                                {#</h3>#}
+                            {#</div>#}
+                            {#<div class="mod-body hide">#}
+                                {#<ul>#}
+                                    {#<li onclick="AWS.dialog('topicEditHistory', decodeURIComponent('2016-02-25%3A%20%3Ca%20href%3D%22people%2Fkang%22%3Ekang%3C%2Fa%3E%20%E5%88%9B%E5%BB%BA%E4%BA%86%E8%AF%A5%E8%AF%9D%E9%A2%98%3C%2Fp%3E'));">#}
+                                        {#<span class="pull-right text-color-999">2016-02-25</span>#}
+                                        {#<a href="javascript:;" data-id="" class="aw-user-name">kang</a>#}
+                                    {#</li>#}
+                                {#</ul>#}
+                            {#</div>#}
+                        {#</div>#}
+                        <!-- end 话题修改记录 -->
+                        {% if session_user.isAdmin is not empty %}
+                        <div class="aw-mod">
+                            <div class="mod-head">
+                                <h3>管理</h3>
+                            </div>
+
+                            <div class="mod-body">
+                                <ul>
+                                    <li>
+                                        <a href="http://localhost/wecenter/?/topic/edit/2">编辑话题</a>
+                                    </li>
+                                    <li>
+                                        <a href="http://localhost/wecenter/?/topic/manage/2">管理话题</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/topic/ajax/lock/', 'topic_id=2');">锁定话题</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '确认删除?'}, function(){AWS.ajax_request(G_BASE_URL + '/topic/ajax/remove/', 'topic_id=2');});">删除话题</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <!-- end 侧边栏 -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'Base.twig' %}
+
+{% block content %}
+    <div class="aw-container-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="aw-content-wrap clearfix">
+                    <div class="col-sm-12 col-md-9 aw-main-content">
+                        <!-- tab切换 -->
+                        <ul class="nav nav-tabs aw-nav-tabs active hidden-xs">
+                            <li>
+                                <a href="#topic_index.html">30 天</a>
+                            </li>
+                            <li>
+                                <a href="#topic_index.html">7 天</a>
+                            </li>
+                            <li class="active">
+                                <a href="#topic_index.html">全部</a>
+                            </li>
+                        </ul>
+                        <!-- end tab切换 -->
+                        <div class="aw-mod aw-topic-list">
+                            <div class="mod-body clearfix">
+                                {% for row in topics %}
+                                    <div class="aw-item">
+                                        <!-- 话题图片 -->
+                                        <a class="img aw-border-radius-5" href="{{ 'topic/lists?topic_id='|generateUrl ~ row.topic_id }}" data-id="2">
+                                            <img style="max-width:50px;max-height:50px;" src="{{ ('Uploads/' ~ row.topic_img) |generateUrl }}" alt=""></a>
+                                        <!-- end 话题图片 -->
+                                        <p class="clearfix">
+                                            <!-- 话题内容 -->
+									<span class="topic-tag">
+										<a class="text" href="{{ ('topic/lists?topic_id=' ~ row.topic_id) |generateUrl }}" data-id="2">{{ row.topic_title }}</a>
+									</span>
+                                            <!-- end 话题内容 -->
+                                        </p>
+                                        <p class="text-color-999">
+                                            <span>{{ row.allDays|nullToZeroNumber }} 个讨论</span>
+                                        </p>
+                                        <p class="text-color-999">7 天新增 {{ row.sevenDaysAgo|nullToZeroNumber }} 个讨论, 30 天新增 {{ row.thirtyDaysAgo|nullToZeroNumber }} 个讨论</p>
+                                    </div>
+                                {% endfor %}
+                                {#<div class="aw-item">#}
+                                {#<!-- 话题图片 -->#}
+                                {#<a class="img aw-border-radius-5" href="topic.html" data-id="4">#}
+                                {#<img src="static/common/topic-mid-img.png" alt=""></a>#}
+                                {#<!-- end 话题图片 -->#}
+                                {#<p class="clearfix">#}
+                                {#<!-- 话题内容 -->#}
+                                {#<span class="topic-tag">#}
+                                {#<a class="text" href="topic.html" data-id="4">引力</a>#}
+                                {#</span>#}
+                                {#<!-- end 话题内容 -->#}
+                                {#</p>#}
+                                {#<p class="text-color-999">#}
+                                {#<span>1 个讨论</span>#}
+                                {#</p>#}
+                                {#<p class="text-color-999">7 天新增 1 个讨论, 30 天新增 1 个讨论</p>#}
+                                {#</div>#}
+                            </div>
+                            <div class="mod-footer clearfix"></div>
+                        </div>
+                        <!-- end 我关注的话题 -->
+                    </div>
+
+                    <!-- 侧边栏 -->
+                    <div class="col-sm-3 col-md-3 aw-side-bar hidden-sm hidden-xs">
+                        <!-- 今日话题 -->
+                        <div class="aw-mod topic-daily hidden-xs">
+                            <div class="mod-head">
+                                <h3>今日话题</h3>
+                            </div>
+                            <div class="mod-body">
+                                {% for row in topicTodayData %}
+                                    <dl>
+                                        <dt class="pull-left">
+                                            <!-- 话题图片 -->
+                                            <a data-id="" class="img aw-border-radius-5" href="{{ 'topic/lists?topic_id='|generateUrl ~ row.topic_id }}">
+                                                <img src="{{ ('Uploads/' ~ row.topic_img) | generateUrl }}" alt=""></a>
+                                            <!-- end 话题图片 -->
+                                        </dt>
+                                        <dd class="pull-left">{{ row.topic_title }}</dd>
+                                    </dl>
+                                    <!-- 话题描述 -->
+                                    <p>
+                                        <span>{{ row.topic_desc|slice(0,20) }}</span>
+                                        ...<a href="{{ 'topic/lists?topic_id='|generateUrl ~ row.topic_id }}">进入话题 »</a>
+                                    </p>
+                                    <!-- end 话题描述 -->
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- end 今日话题 -->
+                        <!-- 新增话题 -->
+                        <div class="aw-mod new-topic">
+                            <div class="mod-head">
+                                <h3>新增话题</h3>
+                            </div>
+                            <div class="mod-body clearfix">
+                                <div class="aw-topic-bar">
+                                    <div class="topic-bar clearfix">
+                                        {% for row in topicNewData %}
+                                            <span class="topic-tag">
+                                                <a class="text" href="{{ 'topic/lists?lists='|generateUrl ~ row.topic_id }}" data-id="{{ row.topic_id }}">{{ row.topic_title }}</a>
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end 新增话题 -->
+                        {% if session_user is not empty %}
+                        <div class="aw-mod">
+                            <div class="mod-head">
+                                <h3>我关注的话题</h3>
+                            </div>
+                            <div class="mod-body">
+                                {% for row in follow_topics %}
+                                <p><a class="text" href="{{ 'topic/lists?lists='|generateUrl ~ row.topic_id }}" data-id="{{ row.topic_id }}">{{ row.topic_title }}</a></p>
+                                {% else %}
+                                    空空如也…
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <!-- end 侧边栏 -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

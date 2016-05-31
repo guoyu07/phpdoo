@@ -1,0 +1,288 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+    <div class="aw-container-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="aw-content-wrap clearfix">
+                    <div class="col-sm-12 col-md-9 aw-main-content">
+                        <!-- 话题推荐bar -->
+                        <!-- 话题推荐bar -->
+                        <!-- 话题bar -->
+                        <div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="question" data-id="12">
+                            <div class="tag-bar clearfix">
+							<span class="topic-tag" data-id="2">
+								<a href="topic.html" class="text">{{ question_detail.category_title }}</a>
+							</span>
+
+                            </div>
+                        </div>
+                        <!-- end 话题bar -->
+                        <div class="aw-mod aw-question-detail aw-item">
+                            <div class="mod-head">
+                                <h1>{{ question_detail.question_content }}</h1>
+
+                            </div>
+                            <div class="mod-body">
+                                <div class="content markitup-box"></div>
+                            </div>
+                            <div class="mod-footer">
+                                <div class="meta">
+                                    <span class="text-color-999">{{ question_detail.add_time|timeago }}</span>
+                                    {% if session_user.isAdmin is not empty or session_user.id == question_detail.user_id  %}
+                                    <a class="text-color-999" href="{{ ('question/edit?question_id=' ~ question_detail.question_id) | generateUrl }}">
+                                        <i class="icon icon-edit"></i>
+                                        编辑
+                                    </a>
+                                    {% endif %}
+                                    <div class="pull-right more-operate">
+                                        <a class="text-color-999 dropdown-toggle" data-toggle="dropdown">
+                                            <i class="icon icon-share"></i>
+                                            分享
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="aw-mod aw-question-comment">
+                            <div class="mod-head">
+                                <ul class="nav nav-tabs aw-nav-tabs active">
+                                    <li>
+                                        <a href="question.html">
+                                            时间
+                                            <i class="icon icon-up"></i>
+                                        </a>
+                                    </li>
+
+                                    <h2 class="hidden-xs">{{ answers|length }} 个回复</h2>
+                                </ul>
+                            </div>
+                            <div class="mod-body aw-feed-list">
+                                {% for row in answers %}
+                                <div class="aw-item" uninterested_count="0" force_fold="0" id="answer_list_2">
+                                    <div class="mod-head">
+                                        <a class="anchor" name="answer_2"></a>
+                                        <!-- 用户头像 -->
+                                        <a class="aw-user-img aw-border-radius-5" href="people.html" data-id="3">
+                                            <img src="{{ 'Resource/Default'|generateUrl }}/common/avatar-mid-img.png" alt=""></a>
+                                        <!-- end 用户头像 -->
+                                        <div class="title">
+                                            <p>
+                                                <a class="aw-user-name" href="people.html" data-id="3">{{ row.username }}</a>
+                                                -
+                                                <span class="text-color-999">一句话介绍</span>
+                                            </p>
+                                            <p class="text-color-999 aw-agree-by hide">赞同来自:</p>
+                                        </div>
+                                    </div>
+                                    <div class="mod-body clearfix">
+                                        <!-- 评论内容 -->
+                                        <div class="markitup-box">{{ row.answer_content | raw }}</div>
+
+                                        <!-- end 评论内容 -->
+                                    </div>
+                                    <div class="mod-footer">
+                                        <!-- 社交操作 -->
+                                        <div class="meta clearfix">
+                                            <span class="text-color-999 pull-right">{{ row.add_time|timeago }}</span>
+                                            <!-- 投票栏 -->
+										<span class="operate">
+											<a class="agree  " onclick="AWS.User.agree_vote(this, 'kang', 2);">
+                                                <i data-placement="right" title="" data-toggle="tooltip" class="icon icon-agree" data-original-title="赞同回复"></i> <b class="count">0</b>
+                                            </a>
+											<a class="disagree " onclick="AWS.User.disagree_vote(this, 'kang', 2)">
+                                                <i data-placement="right" title="" data-toggle="tooltip" class="icon icon-disagree" data-original-title="对回复持反对意见"></i>
+                                            </a>
+										</span>
+                                            <!-- end 投票栏 -->
+										<span class="operate">
+											<a class="aw-add-comment" data-id="2" data-type="answer" data-comment-count="0" data-first-click="hide" href="javascript:;">
+                                                <i class="icon icon-comment"></i>
+                                                0
+                                            </a>
+										</span>
+                                            <!-- 可显示/隐藏的操作box -->
+                                            <div class="more-operate">
+                                                <a class="text-color-999" href="javascript:;" onclick="AWS.dialog('commentEdit', {answer_id:2,attach_access_key:'cb47a83f34f20122b8fcb1119f7b8fdb'});">
+                                                    <i class="icon icon-edit"></i>
+                                                    编辑
+                                                </a>
+                                                <a href="javascript:;" onclick="AWS.User.answer_force_fold($(this), 2);" class="text-color-999">
+                                                    <i class="icon icon-fold"></i>
+                                                    折叠
+                                                </a>
+
+                                                <a href="javascript:;" onclick="AWS.dialog('favorite', {item_id:2, item_type:'answer'});" class="text-color-999">
+                                                    <i class="icon icon-favor"></i>
+                                                    收藏
+                                                </a>
+
+                                                <a href="javascript:;" onclick="AWS.User.answer_user_rate($(this), 'thanks', 2);" class="aw-icon-thank-tips text-color-999" data-original-title="感谢热心的回复者" data-toggle="tooltip" title="" data-placement="bottom">
+                                                    <i class="icon icon-thank"></i>
+                                                    感谢
+                                                </a>
+                                                <div class="btn-group pull-left">
+                                                    <a class="text-color-999 dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="icon icon-share"></i>
+                                                        分享
+                                                    </a>
+                                                    <div aria-labelledby="dropdownMenu" role="menu" class="aw-dropdown shareout pull-right">
+                                                        <ul class="aw-dropdown-list">
+                                                            <li>
+                                                                <a onclick="AWS.User.share_out({webid: 'tsina', title: $(this).parents('.aw-item').find('.markitup-box').text()});">
+                                                                    <i class="icon icon-weibo"></i>
+                                                                    微博
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a onclick="AWS.User.share_out({webid: 'qzone', title: $(this).parents('.aw-item').find('.markitup-box').text()});">
+                                                                    <i class="icon icon-qzone"></i>
+                                                                    QZONE
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a onclick="AWS.User.share_out({webid: 'weixin', title: $(this).parents('.aw-item').find('.markitup-box').text()});">
+                                                                    <i class="icon icon-wechat"></i>
+                                                                    微信
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/set_best_answer/', 'answer_id=2');" class="text-color-999">
+                                                    <i class="icon icon-best"></i>
+                                                    最佳回复
+                                                </a>
+                                            </div>
+                                            <!-- end 可显示/隐藏的操作box -->
+
+                                        </div>
+                                        <!-- end 社交操作 -->
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+                            <div class="mod-footer">
+                                <div class="aw-load-more-content hide" id="load_uninterested_answers">
+                                    <span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.alert('被折叠的回复是被你或者被大多数用户认为没有帮助的回复');">为什么被折叠?</span>
+                                    <a href="javascript:;" class="aw-load-more-content">
+                                        <span class="hide_answers_count">0</span>
+                                        个回复被折叠
+                                    </a>
+                                </div>
+
+                                <div class="hide aw-feed-list" id="uninterested_answers_list"></div>
+                            </div>
+
+                        </div>
+                        <!-- end 问题详细模块 -->
+                        <a id="answer"></a>
+
+                        {% if session_user is not empty %}
+                        <div class="aw-mod aw-replay-box question">
+                            <a name="answer_form"></a>
+                            <form action="{{ 'answer/add'|generateUrl }}" method="post" id="answer_form" class="question_answer_form">
+                                <input hidden name="question_id" value="{{ question_detail.question_id }}">
+                                <div class="mod-head">
+                                    <a href="#" class="aw-user-name">
+                                        <img alt="{{ session_user.username }}" src="{{ 'Resource/Default'|generateUrl }}/common/avatar-mid-img.png"></a>
+                                    <p>
+                                        <label class="pull-right">
+                                            <input type="checkbox" value="1" name="anonymous">匿名回复</label>
+                                        <label class="pull-right"></label>
+                                        {{ session_user.username }}
+                                    </p>
+                                </div>
+                                <div class="mod-body">
+                                    <div class="aw-mod aw-editor-box">
+                                        <div class="mod-head">
+                                            <div class="wmd-panel">
+                                                <textarea style=" word-wrap: break-word; resize: none; height: 329px; " class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="answer_content"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="mod-body clearfix">
+                                            <button type="submit" class="btn btn-normal btn-success pull-right btn-reply">回复</button>
+                                            <span class="pull-right text-color-999" id="answer_content_message">&nbsp;</span>
+                                        </div>
+                                    </div>
+
+                                </div></form>
+
+                        </div>
+
+                        {% else %}
+                            <!-- 回复编辑器 -->
+                            <div class="aw-mod aw-replay-box question">
+                                <a name="answer_form"></a>
+                                <p align="center">
+                                    要回复问题请先
+                                    <a href="{{ 'account/login'|generateUrl }}">登录</a>
+                                    或
+                                    <a href="{{ 'account/register'|generateUrl }}">注册</a>
+                                </p>
+                            </div>
+                            <!-- end 回复编辑器 -->
+                        {% endif %}
+                    </div>
+                    <!-- 侧边栏 -->
+                    <div class="col-md-3 aw-side-bar hidden-xs hidden-sm">
+                        <!-- 发起人 -->
+                        <div class="aw-mod">
+                            <div class="mod-head">
+                                <h3>发起人</h3>
+                            </div>
+                            <div class="mod-body">
+                                <dl>
+                                    <dt class="pull-left aw-border-radius-5">
+                                        <a href="#">
+                                            <img alt="{{ question_detail.username }}" src="/Resource/Default/common/avatar-mid-img.png"></a>
+                                    </dt>
+                                    <dd class="pull-left">
+                                        <a class="aw-user-name" href="#" data-id="1">{{ question_detail.username }}</a>
+                                        <p></p>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <!-- end 发起人 -->
+
+                        <!-- 问题状态 -->
+                        <div class="aw-mod question-status">
+                            <div class="mod-head">
+                                <h3>问题状态</h3>
+                            </div>
+                            <div class="mod-body">
+                                <ul>
+                                    <li>
+                                        最新活动:
+                                        <span class="aw-text-color-blue">{{ question_detail.lastAnswerTime|timeago }}</span>
+                                    </li>
+                                    <li>
+                                        浏览:
+                                        <span class="aw-text-color-blue">{{ question_detail.view_count }}</span>
+                                    </li>
+                                    <li>
+                                        关注:
+                                        <span class="aw-text-color-blue">{{ question_detail.followCount }}</span>
+                                        人
+                                    </li>
+
+                                    {#<li class="aw-border-radius-5" id="focus_users">#}
+                                        {#<a href="http://localhost/wecenter/?/people/kang">#}
+                                            {#<img src="http://localhost/wecenter/uploads/avatar/000/00/00/01_avatar_mid.jpg" class="aw-user-name" data-id="1" alt="kang"></a>#}
+                                    {#</li>#}
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end 问题状态 -->
+                    </div>
+                    <!-- end 侧边栏 -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,155 @@
+{% extends 'Base.twig' %}
+
+{% block content %}
+    <div class="aw-container-wrap">
+        <div class="container category">
+            <div class="row">
+                <div class="col-sm-12">
+                    {% for row in categorys%}
+                        <dl {% if categoryid == row.category_id %} class="active" {% endif %}>
+                            <dt>
+                                {% if row.topic_img %}
+                                    <img alt="{{ row.category_title }}" src="{{ ''|generateUrl }}Uploads/{{ row.topic_img }}">
+                                {% else %}
+                                    <img alt="{{ row.category_title }}" src="{{ ''|generateUrl }}Resource/Default/css/default/img/default_class_imgs.png">
+                                {% endif %}
+                            </dt>
+                            <dd>
+                                <p class="title">
+                                    <a href="{{ 'category/lists'|generateUrl }}?category_id={{ row.category_id }}">{{ row.category_title }}</a>
+                                </p>
+                                <span>{{ row.category_title }}</span>
+                            </dd>
+                        </dl>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="aw-content-wrap clearfix">
+                    <div class="col-sm-12 col-md-9 aw-main-content">
+                        <!-- end 新消息通知 -->
+                        <!-- tab切换 -->
+                        <ul class="nav nav-tabs aw-nav-tabs active hidden-xs">
+                            <li>
+                                <a href="">等待回复</a>
+                            </li>
+                            <li>
+                                <a id="sort_control_hot" href="">热门</a>
+                            </li>
+                            <li>
+                                <a href="">推荐</a>
+                            </li>
+                            <li class="active">
+                                <a href="">最新</a>
+                            </li>
+
+                            <h2 class="hidden-xs">
+                                <i class="icon icon-list"></i>
+                                发现
+                            </h2>
+                        </ul>
+                        <!-- end tab切换 -->
+
+                        <div class="aw-mod aw-explore-list">
+                            <div class="mod-body">
+                                <div class="aw-common-list">
+                                    {% for row in pageData.data %}
+                                        <div data-topic-id="2," class="aw-item active">
+                                            <a rel="nofollow" href="people.html" data-id="1" class="aw-user-name hidden-xs">
+                                                <img alt="" src="{{ 'Resource/Default/common'|generateUrl }}/avatar-max-img.png"></a>
+                                            <div class="aw-question-content">
+                                                <h4>
+                                                    <a href="{{ 'question/detail'|generateUrl }}?question_id={{ row.question_id }}">{{ row.question_content }}</a>
+                                                </h4>
+                                                <a class="pull-right text-color-999" href="{{ 'question/detail'|generateUrl }}?question_id={{ row.question_id }}">回复</a>
+
+                                                <p>
+                                                    <a href="category.html" class="aw-question-tags">{{ row.category_title }}</a>
+                                                    •
+                                                    <a class="aw-user-name" href="people.html">{{ row.username }}</a>
+                                                    <span class="text-color-999">发起了问题 • {{ row.followCount|nullToZeroNumber }} 个关注 • {{ row.answerCount|nullToZeroNumber }} 个回复 • {{ row.view_count|nullToZeroNumber }} 次浏览 • {{ row.add_time | timeago }} </span>
+                                                    <span class="text-color-999 related-topic hide">• 来自相关话题</span>
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+
+
+                            <div class="mod-footer">
+                                <div class="page-control">
+                                    {{ paginator | raw }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 侧边栏 -->
+                    <div class="col-sm-12 col-md-3 aw-side-bar hidden-xs hidden-sm">
+                        <div class="aw-mod aw-text-align-justify">
+                            <div class="mod-head">
+                                <a class="pull-right" href="{{ 'topic'|generateUrl }}">更多 &gt;</a>
+                                <h3>热门话题</h3>
+                            </div>
+                            <div class="mod-body">
+                                {% for row in hotTopics %}
+                                    <dl>
+                                        <dt class="pull-left aw-border-radius-5">
+                                            <a href="{{ 'topic/lists'|generateUrl }}?topic_id={{ row.topic_id }}">
+                                                <img src="{{ ''|generateUrl }}Uploads/{{ row.topic_img }}" alt=""></a>
+                                        </dt>
+                                        <dd class="pull-left">
+                                            <p class="clearfix">
+										<span class="topic-tag">
+											<a data-id="2" class="text" href="{{ 'topic/lists'|generateUrl }}?topic_id={{ row.topic_id }}">{{ row.topic_title }}</a>
+										</span>
+                                            </p>
+                                            <p>
+                                                <b>{{ row.questionCount }}</b>个问题, <b>{{ row.followCount }}</b>人关注
+                                            </p>
+                                        </dd>
+                                    </dl>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="aw-mod aw-text-align-justify">
+                            <div class="mod-head">
+                                <a class="pull-right" href="?/people/">更多 &gt;</a>
+                                <h3>热门用户</h3>
+                            </div>
+                            <div class="mod-body">
+                                {% for row in hostUsers %}
+                                    <dl>
+                                        <dt class="pull-left aw-border-radius-5">
+                                            <a href="people.html">
+                                                <img src="{{ 'Resource/Default/common'|generateUrl }}/avatar-mid-img.png" alt=""></a>
+                                        </dt>
+                                        <dd class="pull-left">
+                                            <a class="aw-user-name" data-id="2" href="people.html">{{ row.username }}</a>
+                                            <p class="signature"></p>
+                                            <p>
+                                                <b>{{ row.questionCount }}</b>
+                                                个问题,
+                                                <b>{{ row.answerCount }}</b>
+                                                次回答
+                                            </p>
+                                        </dd>
+                                    </dl>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end 侧边栏 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="aw-ajax-box" id="aw-ajax-box"></div>
+{% endblock %}

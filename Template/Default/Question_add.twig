@@ -1,0 +1,95 @@
+{% extends 'Base.twig' %}
+
+{% block content %}
+    <div class="aw-container-wrap">
+        <div class="container aw-publish">
+            <div class="row">
+                <div class="aw-content-wrap clearfix">
+                    <div class="col-sm-12 col-md-9 aw-main-content">
+                        <!-- tab 切换 -->
+                        <ul class="nav nav-tabs aw-nav-tabs active">
+                            <li><a href="javascript:;">文章</a></li>
+                            <li class="active"><a href="index.php?m=front&c=Content&a=publish">问题</a></li>
+                            <h2 class="hidden-xs"><i class="icon icon-ask"></i> 发起</h2>
+                        </ul>
+                        <!-- end tab 切换 -->
+
+                        <form action="{{ 'question/post'|generateUrl }}" method="post" id="question_form" onsubmit="">
+                            <div class="aw-mod aw-mod-publish">
+
+                                <div class="mod-body">
+                                    <h3>问题标题:</h3>
+                                    <!-- 问题标题 -->
+                                    <div class="aw-publish-title">
+                                        <div>
+                                            <input type="text" placeholder="问题标题..." name="question_content" id="question_contents" value="" class="form-control">
+                                            <div class="aw-publish-suggest-question hide">
+                                                <p class="text-color-999">你的问题可能已经有答案</p>
+                                                <ul class="aw-dropdown-list">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <select name="category_id" class="form-control">
+                                                {% for row in category %}
+                                                    <option value="{{ row.category_id }}">
+                                                        {{ row.category_title | raw }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- end 问题标题 -->
+
+                                    <h3>问题补充 (选填):</h3>
+                                    <div class="">
+                                        <div>
+                                            <textarea name="question_detail" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <h3>话题:</h3>
+                                    <div class="aw-topic-bar">
+                                        <div class="topic-bar clearfix">
+                                            {% for row in topic %}
+                                                <label><input type="checkbox" name="topic[]" value="{{ row.topic_id }}">
+                                                    {{ row.topic_title }}</label>
+                                            {% endfor %}
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="mod-footer clearfix">
+								<span class="aw-anonymity">
+								<label>
+                                    <input type="checkbox" class="pull-left" value="1" name="anonymous">匿名</label>
+								</span>
+                                    <input type="submit" value="确认发起" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- 侧边栏 -->
+                    <div class="col-sm-12 col-md-3 aw-side-bar hidden-xs">
+                        <!-- 问题发起指南 -->
+                        <div class="aw-mod publish-help">
+                            <div class="mod-head">
+                                <h3>问题发起指南</h3>
+                            </div>
+                            <div class="mod-body">
+                                <p><b>• 问题标题:</b> 请用准确的语言描述您发布的问题思想</p>
+                                <p><b>• 问题补充:</b> 详细补充您的问题内容, 并提供一些相关的素材以供参与者更多的了解您所要问题的主题思想</p>
+                                <p><b>• 选择话题:</b> 选择一个或者多个合适的话题, 让您发布的问题得到更多有相同兴趣的人参与. 所有人可以在您发布问题之后添加和编辑该问题所属的话题</p>
+                            </div>
+                        </div>
+                        <!-- end 问题发起指南 -->
+                    </div>
+                    <!-- end 侧边栏 -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

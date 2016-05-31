@@ -1,0 +1,20 @@
+{
+    "name": "chen/bn-framework",
+    "authors": [
+        {
+            "name": "Mr.Chen",
+            "email": "688977@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "": "Library/"
+        }
+  },
+    "require": {
+        "twig/twig": "~1.0",
+        "gregwar/captcha": "^1.1",
+        "robmorgan/phinx": "^0.5.3",
+        "jasongrimes/paginator": "^1.0"
+    }
+}
