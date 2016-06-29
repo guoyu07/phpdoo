@@ -16,5 +16,5 @@
         "gregwar/captcha": "^1.1",
         "robmorgan/phinx": "^0.5.3",
         "jasongrimes/paginator": "^1.0"
-    },
+    }
 }
