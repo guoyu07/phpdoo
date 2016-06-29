@@ -68,8 +68,8 @@ class Question extends Controller
     public function post()
     {
         $category_id = @$_REQUEST['category_id'];
-        $question_content = @$_REQUEST['question_content'];
-        $question_detail = @$_REQUEST['question_detail'];
+        $question_content = trim(@$_REQUEST['question_content']);
+        $question_detail = addslashes(trim(@$_REQUEST['question_detail']));
         $topic = @$_REQUEST['topic'];
 
         if (!$category_id || !$question_content || !$question_detail) {
@@ -100,7 +100,8 @@ class Question extends Controller
             Template::load('Misc/Redirect.twig',array(
                 'data'=>array(
                     'text'=>'添加成功',
-                    'link'=>Response::generateUrl(''),
+//                    'link'=>Response::generateUrl('/question/detail?question_id=' . $lastQuestionId),
+                    'link'=>Response::generateUrl('question/add'),
                     'timeout'=>3,   //3s后跳转
                 )
             ));
@@ -159,7 +160,6 @@ class Question extends Controller
         $question_detail = QuestinModel::findById($question_id);
 
         $answers = Answer::findByQuestionId($question_detail[0]['question_id']);
-
         Template::load('Question_detail.twig',array(
             'question_detail'  => $question_detail[0],
             'answers'   => $answers,

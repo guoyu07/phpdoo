@@ -55,6 +55,54 @@ class Spider
             'topics'=>$topics
         ));
     }
+    public function free()
+    {
+        $url = "http://localhost/debug/html/free.html";
+        $url = 'https://freecodecamp.cn/baoniu';
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+        $response = curl_exec($curl);
+
+        $pattern ='#<td class="col-xs-2 hidden-xs"><a[^(">)]*?href="/challenges/([^>]*?)\#\?solution=([^(">)]*?)"[^>]*?>View solution</a></td>#';
+        preg_match_all($pattern,$response,$matchs);
+
+        $title = $matchs[1];
+        $content = $matchs[2];
+
+        foreach($content as $key=>$val) {
+            $content[$key] = addslashes(urldecode($val));
+        }
+
+
+        $data = array();
+        foreach ($content as $key => $val) {
+            $data[]=array(
+                'category_id'=>9,
+                'question_content'=>$title[$key],
+                'question_detail'=>$val,
+                'add_time'=>time(),
+                'update_time'=>time(),
+                'user_id'=>1,
+                'view_count'=>0,
+            );
+        }
+        if (count($data)>0) {
+            $res = QuestionModel::spiderToDB($data);
+        } else {
+            $res['count'] = -1;
+        }
+
+        if (@intval($res['count'])>0) {
+            Template::load('Misc/Redirect.twig', array(
+                'data' => array(
+                    'text' => '恭喜,您已成功插入 ' . $res['count'] . ' 条数据！',
+                    'link' => Response::generateUrl('admin/spider'),
+                    'timeout' => 3,
+                )
+            ));
+        }
+    }
     public function start()
     {
 //        flush();

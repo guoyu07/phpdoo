@@ -153,16 +153,16 @@ class Account extends Controller
 
         // 密码验证处理
         $vcode = 0;
-        if (preg_match('/[A-Z]/',$password,$matchs)) {
+        if (preg_match('/[A-Z]+/',$password,$matchs)) {
             $vcode++;
         }
-        if (preg_match('/[a-z]/',$password,$matchs)) {
+        if (preg_match('/[a-z]+/',$password,$matchs)) {
             $vcode++;
         }
-        if (preg_match('/[\d]/',$password,$matchs)) {
+        if (preg_match('/[\d]+/',$password,$matchs)) {
             $vcode++;
         }
-        if (preg_match('/[~!@#$%^&*()_+]/',$password,$matchs)) {
+        if (preg_match('/[~!@#$%^&*()_+]+/',$password,$matchs)) {
             $vcode++;
         }
 

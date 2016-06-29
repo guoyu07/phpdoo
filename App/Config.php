@@ -33,7 +33,7 @@ Core\Request::autoDetectBaseURL();
  * 模板初始化
  */
 Core\Template::initialize(TEMPLATE_PATH
-    , array('cache'=>APP_PATH.'Cache',)   //开启缓存
+//    , array('cache'=>APP_PATH.'Cache',)   //开启缓存
 );
 
 /**

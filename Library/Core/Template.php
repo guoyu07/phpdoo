@@ -30,6 +30,7 @@ class Template
         }
         self::$loader = new \Twig_Loader_Filesystem($templatePath);
         self::$twig = new \Twig_Environment(self::$loader,$options);
+
         self::$twig->addGlobal('web_root_path',HTTP_ROOT_PATH);
         self::$twig->addGlobal('request_url',Request::getRequestUrl());
         self::$twig->addExtension(new TimeAgo());
