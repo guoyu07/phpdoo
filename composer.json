@@ -15,7 +15,9 @@
         "twig/twig": "~1.0",
         "gregwar/captcha": "^1.1",
         "robmorgan/phinx": "^0.5.3",
-        "jasongrimes/paginator": "^1.0",
-        "heroku/heroku-buildpack-php": "^107.0"
-    }
+        "jasongrimes/paginator": "^1.0"
+    },
+   "require-dev": {
+      "heroku/heroku-buildpack-php": "^107.0"
+   }
 }
