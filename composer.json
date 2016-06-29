@@ -17,7 +17,4 @@
         "robmorgan/phinx": "^0.5.3",
         "jasongrimes/paginator": "^1.0"
     },
-   "require-dev": {
-      "heroku/heroku-buildpack-php": "^107.0"
-   }
 }
