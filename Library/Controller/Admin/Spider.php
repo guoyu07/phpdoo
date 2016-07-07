@@ -57,7 +57,7 @@ class Spider
     }
     public function free()
     {
-        $url = "http://localhost/debug/html/free.html";
+//        $url = "http://localhost/debug/html/free.html";
         $url = 'https://freecodecamp.cn/baoniu';
 
         $curl = curl_init($url);
